@@ -21,8 +21,8 @@ fi
 SDK_URL=http://dl.google.com/android/$SDK_FILE
 
 DEFAULT_INSTALL=platform-tools
-WAIT_FOR_EMULATOR_URL=https://github.com/embarkmobile/android-sdk-installer/raw/version-2/wait_for_emulator
-ACCEPT_LICENSES_URL=https://github.com/embarkmobile/android-sdk-installer/raw/version-2/accept-licenses
+WAIT_FOR_EMULATOR_URL=https://raw.githubusercontent.com/embarkmobile/android-sdk-installer/version-2/wait_for_emulator
+ACCEPT_LICENSES_URL=https://raw.githubusercontent.com/embarkmobile/android-sdk-installer/version-2/accept-licenses
 
 # Defaults
 INSTALLER_DIR=$HOME/.android-sdk-installer
