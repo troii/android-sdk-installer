@@ -7,9 +7,25 @@ Installer script for the Android SDK. Designed to simplify automated setup of CI
 
 [Journey][1] - Build enterprise mobile apps for iOS and Android. Work in the cloud, code in JavaScript and forget about back-end development.
 
+## Notable alternatives
+
+If you're using Gradle, https://github.com/JakeWharton/sdk-manager-plugin handles the installation of the SDK,
+as well as keeping it up to date, with minimal configuration.
+
+If you are using Travis CI, they added [built-in support](http://docs.travis-ci.com/user/languages/android/) for Android. You can use the above Gradle plugin on top of Travis' Android support.
+
+## Update - 2014/06/27 - Android SDK r23
+
+With the release of Android SDK version 23, there are some backwards-incompatible changes:
+
+1. System image names changed. For example, instead of `sysimg-17`, use `sys-img-armeabi-v7a-android-17`.
+
+2. The Android license was updated, and now has the id `android-sdk-license-5be876d5`. If you did not
+   explicitly specify any license, you shouldn't need any change.
+
 ## Usage
 
-    curl -3L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=build-tools-18.1.0,android-17,sysimg-17 && source ~/.android-sdk-installer/env
+    curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=build-tools-18.1.0,android-17,sys-img-armeabi-v7a-android-17 && source ~/.android-sdk-installer/env
 
 The above command will download and install the SDK in `$HOME/.android-sdk-installer`. You can override it with `--dir=custom_path`.
 
@@ -19,7 +35,7 @@ You can specify components to install directly with `--install=component1,compon
 
 `platform-tools` is automatically installed. Some typical filters:
 
-    build-tools-18.1.0,android-17,sysimg-17,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository
+    build-tools-18.1.0,android-17,sys-img-armeabi-v7a-android-17,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository
 
 To get a full list of available SDK components, run:
 
@@ -32,19 +48,19 @@ You may also include the script directly in your project, but then it will not b
 
 ## Accepting licenses
 
-By default, only the `android-sdk-license-bcbbd656` license is accepted. This has the side-effect of preventing
+By default, only the `android-sdk-license-5be876d5` license is accepted. This has the side-effect of preventing
 the install of MIPS emulator images, as well as some other components which are usually not required.
 
-If you do need to install these components, you can override the accepted licenses by using the `--accept` option, 
+If you do need to install these components, you can override the accepted licenses by using the `--accept` option,
 separated by a pipe character:
 
     set COMPONENTS="build-tools-18.1.0,android-17,sysimg-17"
-    set LICENSES="android-sdk-license-bcbbd656|mips-android-sysimage-license-15de68cc|intel-android-sysimage-license-1ea702d1"
-    curl -3L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS --accept=$LICENSES && source ~/.android-sdk-installer/env
+    set LICENSES="android-sdk-license-5be876d5|mips-android-sysimage-license-15de68cc|intel-android-sysimage-license-1ea702d1"
+    curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS --accept=$LICENSES && source ~/.android-sdk-installer/env
 
 You can also use the accept-license script to install components afterwards:
 
-    accept-licenses "android update sdk --no-ui --all --filter build-tools" "android-sdk-license-bcbbd656|mips-android-sysimage-license-15de68cc"
+    accept-licenses "android update sdk --no-ui --all --filter build-tools" "android-sdk-license-5be876d5|mips-android-sysimage-license-15de68cc"
 
 ## Backwards compatibility
 
@@ -101,7 +117,7 @@ This assumes that the new Gradle-based Android build system is used, with the Gr
     before_install:
         # Install base Android SDK and components
         - sudo apt-get install -qq libstdc++6:i386 lib32z1
-        - export COMPONENTS=build-tools-18.1.0,android-17,sysimg-17,extra-android-support,extra-google-google_play_services,extra-google-gcm,build-tools-18.1.0,extra-google-m2repository,extra-android-m2repository
+        - export COMPONENTS=build-tools-18.1.0,android-17,sys-img-armeabi-v7a-android-17,extra-android-support,extra-google-google_play_services,extra-google-gcm,build-tools-18.1.0,extra-google-m2repository,extra-android-m2repository
         - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-1/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS
         - source ~/.android-sdk-installer/env
 
@@ -120,11 +136,6 @@ This assumes that the new Gradle-based Android build system is used, with the Gr
     script:
         - TERM=dumb ./gradlew test connectedCheck
 
-
-### More Travis CI examples
-
-* [Robospice](https://github.com/octo-online/robospice/blob/master/.travis.yml) - Testing on multiple emulators in parallel, using Maven
-* [ZXing Android Minimal](https://github.com/embarkmobile/zxing-android-minimal/blob/master/.travis.yml) - Building both an apklib with Maven, and aar with Gradle (no tests)
 
 ## License
 

@@ -14,9 +14,9 @@ fi
 
 # Constants
 if [[ $os == 'linux' ]]; then
-    SDK_FILE=android-sdk_r23-linux.tgz
+    SDK_FILE=android-sdk_r23.0.2-linux.tgz
 elif [[ $os == 'osx' ]]; then
-    SDK_FILE=android-sdk_r23-macosx.zip
+    SDK_FILE=android-sdk_r23.0.2-macosx.zip
 fi
 SDK_URL=http://dl.google.com/android/$SDK_FILE
 
@@ -27,7 +27,7 @@ ACCEPT_LICENSES_URL=https://raw.githubusercontent.com/embarkmobile/android-sdk-i
 # Defaults
 INSTALLER_DIR=$HOME/.android-sdk-installer
 INSTALL=""
-LICENSES="android-sdk-license-bcbbd656"
+LICENSES="android-sdk-license-5be876d5"
 
 for i in "$@"
 do
@@ -74,10 +74,9 @@ elif [[ $os == 'osx' ]]; then
 fi
 
 # Download scripts
-# Mac on Travis has issues with SSL certs if we don't use the -3 / -ssl3 option
-curl -3L -o $TOOLS_DIR/wait_for_emulator $WAIT_FOR_EMULATOR_URL
+curl -L -o $TOOLS_DIR/wait_for_emulator $WAIT_FOR_EMULATOR_URL
 chmod +x $TOOLS_DIR/wait_for_emulator
-curl -3L -o $TOOLS_DIR/accept-licenses $ACCEPT_LICENSES_URL
+curl -L -o $TOOLS_DIR/accept-licenses $ACCEPT_LICENSES_URL
 chmod +x $TOOLS_DIR/accept-licenses
 
 
